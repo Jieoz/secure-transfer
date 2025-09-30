@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 安全传输工具 - 专业版</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 页头 -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 1L3 5V11C3 16.55 6.84 21.74 12 23C17.16 21.74 21 16.55 21 11V5L12 1M10 17L6 13L7.41 11.59L10 14.17L16.59 7.58L18 9L10 17Z"/>
+                    </svg>
+                    <span class="logo-text">安全传输</span>
+                    <span class="logo-badge">Pro</span>
+                </h1>
+                <div class="header-actions">
+                    <div class="room-info">
+                        <span class="room-label">房间:</span>
+                        <input type="text" id="roomIdInput" class="room-id-input" placeholder="输入 6 位 PIN 码或自定义房间号" maxlength="20">
+                        <div class="room-buttons">
+                            <button id="joinRoomBtn" class="btn-icon" title="加入/创建房间">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2Z"/>
+                                </svg>
+                            </button>
+                            <button id="copyRoomBtn" class="btn-icon" title="复制房间链接">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+                                </svg>
+                            </button>
+                            <button id="newRoomBtn" class="btn-icon" title="创建新房间">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button id="themeToggle" class="btn-icon" title="切换主题">
+                        <svg class="icon theme-light" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z"/>
+                        </svg>
+                        <svg class="icon theme-dark" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                            <path d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.4 6.35,17.41C9.37,20.43 14,20.54 17.33,17.97Z"/>
+                        </svg>
+                    </button>
+                    <button id="clearRoomBtn" class="btn btn-danger" title="清空房间">
+                        <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
+                        </svg>
+                        清空
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main class="main">
+            <!-- 自动清理提示 -->
+            <div class="info-banner">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/>
+                </svg>
+                <span>房间将在1小时无活动后自动清理，所有消息和文件将被永久删除</span>
+                <button id="dismissBanner" class="dismiss-btn" title="关闭提示">
+                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- 聊天历史记录区域 - 现在在页面最上方，完整宽度 -->
+            <div class="history-panel panel">
+                <div class="history-header">
+                    <h3 class="panel-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z"/>
+                        </svg>
+                        聊天记录
+                    </h3>
+                    <div class="history-actions">
+                        <!-- 统计信息 -->
+                        <div class="stats-mini">
+                            <div class="stat-mini">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2Z"/>
+                                </svg>
+                                <span id="messageCount">0</span>
+                            </div>
+                            <div class="stat-mini">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"/>
+                                </svg>
+                                <span id="fileCount">0</span>
+                            </div>
+                            <div class="stat-mini">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M17,13H11V7H13V11H17V13Z"/>
+                                </svg>
+                                <span id="totalSize">0 B</span>
+                            </div>
+                        </div>
+                        <button id="refreshBtn" class="btn-icon" title="刷新">
+                            <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="historyList" class="history-list">
+                    <!-- 历史记录项将在此处动态生成 -->
+                </div>
+            </div>
+
+            <!-- 内容区域：左侧消息输入，右侧文件上传 -->
+            <div class="content-wrapper">
+                <!-- 左侧：消息输入区域 -->
+                <div class="main-content">
+                    <div class="message-input-panel panel">
+                        <div class="input-group">
+                            <div class="textarea-container">
+                                <textarea id="messageInput" placeholder="输入消息..." maxlength="5000"></textarea>
+                                <button id="pasteBtn" class="paste-btn" title="粘贴">
+                                    <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <button id="voiceRecordBtn" type="button" class="btn-secondary voice-btn">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Zm-7 8a1 1 0 0 0-1 1v1a7 7 0 0 0 6 6.92V22h2v-2.08A7 7 0 0 0 20 13v-1a1 1 0 0 0-1-1h-1v2a6 6 0 1 1-12 0v-2Z"/>
+                                </svg>
+                                语音
+                            </button>
+                            <button id="sendBtn" class="btn btn-primary">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                                </svg>
+                                发送
+                            </button>
+                        </div>
+                        <div id="voiceIndicator" class="voice-indicator" style="display:none;">
+                            <span class="voice-dot"></span>
+                            <span id="voiceTimer">00:00</span>
+                            <button type="button" id="cancelVoiceBtn" class="btn-link">取消</button>
+                        </div>
+                        <div class="encryption-status">
+                            <svg id="encryptionIcon" class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"/>
+                            </svg>
+                            <span id="encryptionText">端到端加密已启用</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧工具区域：文件上传 -->
+                <div class="sidebar">
+                    <!-- 文件上传区域 -->
+                    <div class="upload-panel panel">
+                        <h3 class="panel-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                            文件传输
+                        </h3>
+                        <div id="uploadArea" class="upload-area">
+                            <svg class="icon upload-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                            </svg>
+                            <p class="upload-text">点击或拖拽文件</p>
+                            <p class="upload-hint">最大 500MB</p>
+                            <input type="file" id="fileInput" multiple hidden>
+                        </div>
+                        <div id="uploadProgress" class="upload-progress" style="display: none;">
+                            <div class="progress-info">
+                                <div class="progress-bar">
+                                    <div id="progressFill" class="progress-fill"></div>
+                                </div>
+                                <span id="progressText">0%</span>
+                            </div>
+                            <button id="cancelUploadBtn" class="btn-cancel" title="取消上传">
+                                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="upload-panel panel" style="margin-top: 16px;">
+                        <h3 class="panel-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M16,11C18.21,11 20,12.79 20,15V17H12V15C12,12.79 13.79,11 16,11M8,11C10.21,11 12,12.79 12,15V17H4V15C4,12.79 5.79,11 8,11M16,3A4,4 0 0,1 20,7A4,4 0 0,1 16,11A4,4 0 0,1 12,7A4,4 0 0,1 16,3M8,3A4,4 0 0,1 12,7A4,4 0 0,1 8,11A4,4 0 0,1 4,7A4,4 0 0,1 8,3Z"/>
+                            </svg>
+                            在线客户端
+                        </h3>
+                        <div id="clientsList" class="clients-list">暂无客户端</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 模态框 -->
+        <div id="modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">标题</h3>
+                    <button id="modalClose" class="btn-icon">
+                        <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="modalBody" class="modal-body">
+                    <!-- 模态框内容 -->
+                </div>
+            </div>
+        </div>
+
+        <script src="enhanced-ui.js"></script>
+        <script src="crypto.js"></script>
+        <script src="app.js"></script>
+    </div>
+</body>
+</html>
